@@ -7,23 +7,22 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    # check out the source repo
-    - run: 
+    - name: check out the source repo
       uses: actions/checkout@v4
-    # check out the template repo
-    - run:
+    - name: check out the template repo
       uses: actions/checkout@v4
       with:
         repository: ${{ input.template-repo }}
         path: 'template'
-    # copy supported paths to template repo
-    - run: cp README test_main.R report.Rmd reference_report.html template/
+    - name: copy supported paths to template repo
       shell: bash
-    # scrub main.R of function difs
-    - run: echo scrubbing main.R...eventually
+      run: cp README test_main.R report.Rmd reference_report.html template/
+    - name: scrub main.R of function difs
       shell: bash
-    # git add and git commit all changes in template repo
-    - run: |
+      run: echo scrubbing main.R...eventually
+    - name: git add and git commit all changes in template repo
+      shell: bash
+      run: |
       cd template
       git add *
       git commit -m 'automated from ${{ github.ref }}'
