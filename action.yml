@@ -20,18 +20,13 @@ runs:
     - name: scrub main.R of function difs
       shell: bash
       run: echo scrubbing main.R...eventually
-    - name: git add and git commit all changes in template repo, push
-      shell: bash
-      run: |
-        cd template
-        git config user.email "bf591-deploy-action@i-am-a-robot.com.org"
-        git config user.name "bf591-deploy-action"
-        git add *
-        git commit -m 'automated from ${{ github.ref }}'
-        # authenticate to github
-        echo ${{ github.token }} | gh auth login --with-token
-        gh repo list
-        ssh-keygen -t ed25519 -C "bf591-deploy-action key" -N "" -f ~/.ssh/gh-test
-        gh repo deploy-key add ~/.ssh/gh-test.pub -w --repo ${{ inputs.template-repo }} -t "bf591-deploy-action key"
-        gh repo deploy-key list
-        git push
+    - name: push to template repo
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        SSH_DEPLOY_KEY: ${{ secrets.TEMPLATE_REPO_KEY }}
+      with:
+        source-directory: template/
+        destination-github-username: ${{ github.actor }}
+        destination-repository-name: ${{ inputs.template-repo }}
+        user-email: '${{ github.actor }}@bf591-deploy-action'
+        commit-message: See ORIGIN_COMMIT from $GITHUB_REF
