@@ -24,6 +24,8 @@ runs:
       shell: bash
       run: |
         cd template
+        git config user.email "bf591-deploy-action@i-am-a-robot.com.org"
+        git config user.name "bf591-deploy-action"
         git add *
         git commit -m 'automated from ${{ github.ref }}'
         git push
