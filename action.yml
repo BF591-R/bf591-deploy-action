@@ -2,7 +2,7 @@ name: 'Deploy assignment'
 description: Deploy the current repo assignment materials to template-repo
 inputs:
   template-repo:
-    description: URL of the template repo this assignment should be deployed to
+    description: name of the template repo (w/o BF591-R) this assignment should be deployed to
     required: true
   template-repo-key:
     description: Private key assocaited with a deploy key set on the template repo
@@ -30,6 +30,7 @@ runs:
       with:
         source-directory: template/
         destination-github-username: ${{ github.actor }}
+        destination-repository-username: 'BF591-R'
         destination-repository-name: ${{ inputs.template-repo }}
         user-email: '${{ github.actor }}@bf591-deploy-action'
         commit-message: See ORIGIN_COMMIT from $GITHUB_REF
