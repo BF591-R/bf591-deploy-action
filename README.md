@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy assignment solution
-        uses: BF591-R/bf591-deploy-action@main
+        uses: BF591-R/bf591-deploy-action@v1.0
         with:
           template-repo: test-assignment
           template-repo-key: ${{ secrets.TEMPLATE_REPO_KEY }}
