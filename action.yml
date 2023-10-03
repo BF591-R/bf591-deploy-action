@@ -20,12 +20,15 @@ runs:
     - name: scrub main.R of function difs
       shell: bash
       run: echo scrubbing main.R...eventually
-    - name: git add and git commit all changes in template repo
+    - name: git add and git commit all changes in template repo, push
       shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         cd template
         git config user.email "bf591-deploy-action@i-am-a-robot.com.org"
         git config user.name "bf591-deploy-action"
         git add *
         git commit -m 'automated from ${{ github.ref }}'
+        gh auth login
         git push
