@@ -12,6 +12,9 @@ runs:
   steps:
     - name: check out the source repo
       uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository }}
+        path: 'solution'
     - name: check out the template repo
       uses: actions/checkout@v4
       with:
@@ -19,7 +22,7 @@ runs:
         path: 'template'
     - name: copy supported paths to template repo
       shell: bash
-      run: cp README.md test_main.R report.Rmd reference_report.html template/
+      run: cp solution/{README.md,test_main.R,report.Rmd,reference_report.html} template/
     - name: scrub main.R of function difs
       shell: bash
       run: python strip_main.R > template/main.R
