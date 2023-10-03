@@ -1,6 +1,7 @@
 # a stupid little parser that finds top level function bodies
 # and strips them out
 import re
+import sys
 
 def scan_to_matching(s, open_c, close_c):
     c_stack = []
@@ -15,7 +16,7 @@ def scan_to_matching(s, open_c, close_c):
     assert i >= 0
     return i
 
-code = open('main.R').read()
+code = open(sys.argv[1]).read()
 
 # we use the line at the end of main.R to mark code that shouldn't be stripped
 code_end = code.index('# SUPPORT CODE - DO NOT EDIT BELOW THIS LINE')-2

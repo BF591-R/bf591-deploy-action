@@ -27,7 +27,7 @@ runs:
       shell: bash
       run: |
         find ${{ github.action_path }}
-        python ${{ github.action_path }}/strip_main.py > template/main.R
+        python ${{ github.action_path }}/strip_main.py $PWD/solution/main.R > template/main.R
     - name: push to template repo
       uses: cpina/github-action-push-to-another-repository@v1.7.2
       env:
