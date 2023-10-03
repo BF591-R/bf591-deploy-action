@@ -1,0 +1,30 @@
+name: 'Deploy assignment'
+description: Deploy the current repo assignment materials to template-repo
+inputs:
+  template-repo:
+    description: URL of the template repo this assignment should be deployed to
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    # check out the source repo
+    - run: 
+      uses: actions/checkout@v4
+    # check out the template repo
+    - run:
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ input.template-repo }}
+        path: 'template'
+    # copy supported paths to template repo
+    - run: cp README test_main.R report.Rmd reference_report.html template/
+      shell: bash
+    # scrub main.R of function difs
+    - run: echo scrubbing main.R...eventually
+      shell: bash
+    # git add and git commit all changes in template repo
+    - run: |
+      cd template
+      git add *
+      git commit -m 'automated from ${{ github.ref }}'
+      git push
