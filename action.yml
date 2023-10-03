@@ -15,7 +15,7 @@ runs:
     - name: check out the template repo
       uses: actions/checkout@v4
       with:
-        repository: ${{ inputs.template-repo }}
+        repository: 'BF591-R/${{ inputs.template-repo }}'
         path: 'template'
     - name: copy supported paths to template repo
       shell: bash
