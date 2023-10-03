@@ -25,7 +25,9 @@ runs:
       run: cp solution/{README.md,test_main.R,report.Rmd,reference_report.html} template/
     - name: scrub main.R of function difs
       shell: bash
-      run: python ${{ github.action_path }}/strip_main.R > template/main.R
+      run: |
+        find ${{ github.action_path }}
+        python ${{ github.action_path }}/strip_main.R > template/main.R
     - name: push to template repo
       uses: cpina/github-action-push-to-another-repository@v1.7.2
       env:
