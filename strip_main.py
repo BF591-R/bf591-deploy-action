@@ -19,10 +19,11 @@ def scan_to_matching(s, open_c, close_c):
 code = open(sys.argv[1]).read()
 
 # we use the line at the end of main.R to mark code that shouldn't be stripped
-code_end = code.index('# SUPPORT CODE - DO NOT EDIT BELOW THIS LINE')-2
+support_code_line = '# SUPPORT CODE - DO NOT EDIT BELOW THIS LINE'
 
-if code_end == -1 :
-    code_end = len(code)
+code_end = len(code)
+if support_code_line in code:
+    code_end = code.index(support_code_line)-2
 
 boundaries = [0]
 
