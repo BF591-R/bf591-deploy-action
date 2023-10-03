@@ -35,5 +35,3 @@ runs:
         gh repo deploy-key add ~/.ssh/gh-test.pub -w --repo ${{ inputs.template-repo }} -t "bf591-deploy-action key"
         gh repo deploy-key list
         git push
-        gh repo deploy-key list
-        gh repo deploy-key delete 
