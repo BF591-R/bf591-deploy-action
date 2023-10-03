@@ -23,6 +23,9 @@ runs:
     - name: copy supported paths to template repo
       shell: bash
       run: cp solution/{README.md,test_main.R,report.Rmd,reference_report.html} template/
+    - name: blurp
+      shell: bash
+      run: find
     - name: scrub main.R of function difs
       shell: bash
       run: python strip_main.R > template/main.R
