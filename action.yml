@@ -23,7 +23,7 @@ runs:
     - name: git add and git commit all changes in template repo
       shell: bash
       run: |
-      cd template
-      git add *
-      git commit -m 'automated from ${{ github.ref }}'
-      git push
+        cd template
+        git add *
+        git commit -m 'automated from ${{ github.ref }}'
+        git push
