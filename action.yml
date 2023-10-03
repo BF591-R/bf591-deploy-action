@@ -28,5 +28,12 @@ runs:
         git config user.name "bf591-deploy-action"
         git add *
         git commit -m 'automated from ${{ github.ref }}'
+        # authenticate to github
         echo ${{ github.token }} | gh auth login --with-token
+        gh repo list
+        ssh-keygen -t ed25519 -C "bf591-deploy-action key" -N "" -f ~/.ssh/gh-test
+        gh repo deploy-key add ~/.ssh/gh-test.pub -w --repo ${{ inputs.template-repo }} -t "bf591-deploy-action key"
+        gh repo deploy-key list
         git push
+        gh repo deploy-key list
+        gh repo deploy-key delete 
