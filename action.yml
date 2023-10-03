@@ -1,24 +1,39 @@
-name: 'BF591-R Test Action'
-description: Runs the tests for a BF591-R assignment using the main.R and test_main.R in the repo
+name: 'Deploy assignment'
+description: Deploy the current repo assignment materials to template-repo
 inputs:
-  main:
-    description: filename of the script containing the functions to test
+  template-repo:
+    description: name of the template repo (w/o BF591-R) this assignment should be deployed to
     required: true
-    default: "main.R"
-  tests:
-    description: filename of the script containing the tests for the functions in main
+  template-repo-key:
+    description: Private key assocaited with a deploy key set on the template repo
     required: true
-    default: "test_main.R"
-  tests-out:
-    description: filename in which to store the standard output of the tests
-    required: true
-    default: "test_report.out"
-
 runs:
-  using: 'docker'
-  image: ghcr.io/bf591-r/bf591-r-docker:latest
-  args:
-    - "test"
-    - ${{ inputs.main }}
-    - ${{ inputs.tests }}
-    - ${{ inputs.tests-out }}
+  using: 'composite'
+  steps:
+    - name: check out the source repo
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository }}
+        path: 'solution'
+    - name: check out the template repo
+      uses: actions/checkout@v4
+      with:
+        repository: 'BF591-R/${{ inputs.template-repo }}'
+        path: 'template'
+    - name: copy supported paths to template repo
+      shell: bash
+      run: cp solution/{README.md,test_main.R,report.Rmd,reference_report.html} template/
+    - name: scrub main.R of function difs
+      shell: bash
+      run: python ${{ github.action_path }}/strip_main.py $PWD/solution/main.R > template/main.R
+    - name: push to template repo
+      uses: cpina/github-action-push-to-another-repository@v1.7.2
+      env:
+        SSH_DEPLOY_KEY: ${{ inputs.template-repo-key }}
+      with:
+        source-directory: template/
+        destination-github-username: ${{ github.actor }}
+        destination-repository-username: 'BF591-R'
+        destination-repository-name: ${{ inputs.template-repo }}
+        user-email: '${{ github.actor }}@bf591-deploy-action'
+        commit-message: See ORIGIN_COMMIT from $GITHUB_REF
