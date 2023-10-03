@@ -4,6 +4,9 @@ inputs:
   template-repo:
     description: URL of the template repo this assignment should be deployed to
     required: true
+  template-repo-key:
+    description: Private key assocaited with a deploy key set on the template repo
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -23,7 +26,7 @@ runs:
     - name: push to template repo
       uses: cpina/github-action-push-to-another-repository@main
       env:
-        SSH_DEPLOY_KEY: ${{ secrets.TEMPLATE_REPO_KEY }}
+        SSH_DEPLOY_KEY: ${{ inputs.template-repo-key }}
       with:
         source-directory: template/
         destination-github-username: ${{ github.actor }}
