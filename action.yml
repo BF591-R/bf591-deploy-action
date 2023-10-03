@@ -12,7 +12,7 @@ runs:
     - name: check out the template repo
       uses: actions/checkout@v4
       with:
-        repository: ${{ input.template-repo }}
+        repository: ${{ inputs.template-repo }}
         path: 'template'
     - name: copy supported paths to template repo
       shell: bash
