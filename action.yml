@@ -22,9 +22,9 @@ runs:
       run: cp README.md test_main.R report.Rmd reference_report.html template/
     - name: scrub main.R of function difs
       shell: bash
-      run: echo scrubbing main.R...eventually
+      run: python strip_main.R > template/main.R
     - name: push to template repo
-      uses: cpina/github-action-push-to-another-repository@main
+      uses: cpina/github-action-push-to-another-repository@v1.7.2
       env:
         SSH_DEPLOY_KEY: ${{ inputs.template-repo-key }}
       with:
