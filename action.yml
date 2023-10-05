@@ -25,7 +25,7 @@ runs:
       run: cp solution/{README.md,test_main.R,report.Rmd,reference_report.html} template/
     - name: copy data, if needed
       shell: bash
-      run: [ -d "solution/data" ] && cp -r solution/data template/
+      run: '[ -d "solution/data" ] && cp -r solution/data template/'
     - name: scrub main.R of function difs
       shell: bash
       run: python ${{ github.action_path }}/strip_main.py $PWD/solution/main.R > template/main.R
