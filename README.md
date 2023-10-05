@@ -1,37 +1,10 @@
-# bf591-deploy-action
+# bf591-scrub-main
 
-This GitHub Action deploys a BF591-R `source` repo to the corresponding
-`template` repo. It should only be used for the assignment `source` repos as it
-requires specific files to be in the repo root. Specifically, it does the
-following:
-
-1. Clones the current `source` repo
-2. Clones the corresponding `template` repo, passed as an `input` to the action
-3. Copies `report.Rmd`, `reference_report.html`, `README.md`, and `test_main.R`
-   from the `source` repo to the `template` repo
-4. Parses `main.R` in the `source` repo and strips out the function bodies
-   (i.e. the `source`), leaving the rest intact
-5. Copies the stripped `main.R` into the `template` repo
-6. Commits changes to the `template` repo and pushes to GitHub
-
-Additionally, the `source` and `template` repos must be configured with an
-SSH deploy key. Create a public/private key pair somewhere with e.g.:
+This action contains a python script that reads in a `main.R` R script from a BF591-R assignment and strips the function definitions for deployment into template repos. The calling workflow must provide the following inputs:
 
 ```
-ssh-keygen -t ed25519 -C "bf591-deploy-action key" -N "" -f ./gh-test
-```
-
-Copy the contents of `gh-test.pub` as a Deploy Key on the **`template`** repo.
-Copy the contents of the `gh-test` into a new Secret Variable named
-`TEMPLATE_REPO_KEY` on the **`source`** repo. You can/should delete the
-`gh-test*` files after this is done.
-
-After you have done this, add to the solution repo workflows. The action
-has two required inputs:
-
-```
-template-repo: <name of repo> # without the organization, i.e. BF591-R
-template-repo-key: ${{ secrets.TEMPLATE_REPO_KEY }} # private key from the secret in the source repo
+input-path: <path to main.R with solutions>
+output-path: <path to output main.R that should have solutions scrubbed>
 ```
 
 Example workflow:
@@ -44,9 +17,11 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy assignment solution
-        uses: BF591-R/bf591-deploy-action@v1.0
+      - name: check out source repo
+        uses: actions/checkout@v4
+      - name: scrub main.R of function defs
+        uses: BF591-R/bf591-scrub-main@v1.0
         with:
-          template-repo: test-assignment
-          template-repo-key: ${{ secrets.TEMPLATE_REPO_KEY }}
+          input-path: main.R
+          output-path: scrubbed_main.R
 ```
