@@ -10,8 +10,8 @@ output-path: <path to output main.R that should have solutions scrubbed>
 Example workflow:
 
 ```
-name: Test Solutions
-run-name: ${{ github.actor }} is testing this assignment solution
+name: Scrub main.R
+run-name: ${{ github.actor }} is scrubbing main.R
 on: [push]
 jobs:
   Deploy:
